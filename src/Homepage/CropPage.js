@@ -1,0 +1,62 @@
+import React from "react";
+import { Button, Card } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
+import "./CropPage.css";
+import CropSuggestion from "./CropSuggestion"; // Ensure this file exists
+
+const CropPage = ({ onBack }) => {
+  return (
+    <div className="crop-container">
+      <Button 
+        className="back-button" 
+        onClick={onBack} 
+        type="primary" 
+        icon={<LeftOutlined />} 
+        size="large"
+      >
+        Back
+      </Button>
+
+      <header className="crop-header">
+        <h1>Smart Crop Suggestions</h1>
+        <p>Find the best crops to grow based on climate, soil type, and season.</p>
+      </header>
+
+      {/* Crop Suggestion Section */}
+      <section className="crop-suggestions">
+        <h2>Recommended Crops</h2>
+        <div className="crop-grid">
+          {["Wheat", "Rice", "Corn", "Vegetables"].map((crop, index) => (
+            <Card 
+              className="crop-card" 
+              key={index}
+              hoverable
+              cover={
+                <img 
+                  alt={crop}
+                  src={`https://via.placeholder.com/200x150.png?text=${crop}`} 
+                />
+              }
+            >
+              <h3>{crop}</h3>
+              <p>Best conditions for growing {crop.toLowerCase()}.</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Crop Suggestion Component Always Rendered */}
+      <section className="crop-analysis">
+        <h2>Crop Analysis</h2>
+        <CropSuggestion />
+      </section>
+
+      {/* Footer */}
+      <footer className="crop-footer">
+        <p>Powered by IntelliGrow | Smart Agriculture Solutions</p>
+      </footer>
+    </div>
+  );
+};
+
+export default CropPage;

@@ -1,0 +1,304 @@
+/* General Styles */
+.home-container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero {
+    background: 
+      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), /* Dark overlay */
+      url('https://images.unsplash.com/photo-1492496913980-501348b61469?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80') center/cover no-repeat;
+    color: white;
+    padding: 150px 20px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: fadeIn 1s ease-out;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: slideInLeft 1s ease-out;
+    color: #e0f7e0; /* Light green text */
+}
+
+.hero-content p {
+    font-size: 1.75rem;
+    margin-bottom: 40px;
+    font-weight: 300;
+    animation: slideInRight 1s ease-out;
+    color: #f60000; /* Light green text */
+}
+
+.cta-button {
+    background-color: #4caf50; /* Green button */
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+    background-color: #388e3c; /* Darker green on hover */
+    transform: scale(1.05); /* Button scaling effect */
+}
+
+/* Key Features Section */
+.features {
+    padding: 80px 20px;
+    background-color: #f0f8f0; /* Light green background */
+    animation: fadeIn 1.5s ease-out;
+}
+
+.features h2 {
+    font-size: 2.75rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #2e7d32; /* Dark green text */
+}
+
+.feature-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    animation: fadeInUp 1s ease-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    color: #4caf50; /* Green icon */
+    margin-bottom: 20px;
+}
+
+.feature-card h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #2e7d32; /* Dark green text */
+}
+
+.feature-card p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #555;
+}
+
+/* Benefits Section */
+.benefits {
+    background: #e8f5e9; /* Light green background */
+    padding: 80px 20px;
+    animation: fadeIn 2s ease-out;
+}
+
+.benefits h2 {
+    font-size: 2.75rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #2e7d32; /* Dark green text */
+}
+
+.benefit-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 10px;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.benefit-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.benefit-item h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #2e7d32; /* Dark green text */
+}
+
+.benefit-item p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #555;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 80px 20px;
+    background-color: #f0f8f0; /* Light green background */
+    animation: fadeIn 2s ease-out;
+}
+
+.testimonials h2 {
+    font-size: 2.75rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #2e7d32; /* Dark green text */
+}
+
+.testimonial-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.testimonial {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+.testimonial:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.testimonial h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #4caf50; /* Green text */
+}
+
+/* Footer */
+.footer {
+    background: #2e7d32; /* Dark green background */
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.footer h3 {
+    font-size: 2.25rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.footer a {
+    color: #a5d6a7; /* Light green link */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .feature-grid, .benefits-grid, .testimonial-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-card, .benefit-item, .testimonial {
+        max-width: 100%;
+    }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 12px 25px;
+    }
+}

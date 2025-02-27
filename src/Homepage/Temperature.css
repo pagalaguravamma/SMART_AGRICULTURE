@@ -1,0 +1,117 @@
+.temperature-card {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.temperature-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.sensor-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Increased gap to prevent overlapping */
+    margin-top: 20px;
+}
+
+/* Row for Temperature and Humidity */
+.row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Added gap between temperature and humidity */
+}
+
+/* Center the Soil Moisture Row */
+.soil-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sensor-item {
+    text-align: center;
+    flex: 1;
+    max-width: 200px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.sensor-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.sensor-label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Thermometer Styles */
+.thermometer {
+    width: 80px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.thermometer svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Humidity Gauge Styles */
+.humidity-gauge {
+    position: relative;
+    width: 200px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.humidity-gauge svg {
+    display: block;
+    margin: 0 auto;
+}
+/* Soil Moisture Styles */
+.soil-moisture {
+    text-align: center;
+}
+
+.bucket {
+    width: 60px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #8b4513;
+}
+
+.water {
+    width: 100%;
+    background: linear-gradient(to bottom, #00bfff, #1e90ff);
+    position: absolute;
+    bottom: 0;
+    transition: height 0.5s ease-in-out;
+}
+
+.soil-type {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #8b4513;
+}

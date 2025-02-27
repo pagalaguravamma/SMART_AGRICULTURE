@@ -10,11 +10,15 @@ const Home = () => {
   const [showCropPage, setShowCropPage] = useState(false);
 
   const handleGetStarted = () => {
-    setShowCropPage(true); // This will show the CropPage
+    setShowCropPage(true); // Show the CropPage
+  };
+
+  const handleBackToHome = () => {
+    setShowCropPage(false); // Return to Home
   };
 
   if (showCropPage) {
-    return <CropPage />; // If showCropPage is true, render the CropPage
+    return <CropPage onBack={handleBackToHome} />; // Pass onBack function to CropPage
   }
 
   return (

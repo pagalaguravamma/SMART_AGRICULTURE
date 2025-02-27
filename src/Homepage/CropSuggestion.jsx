@@ -26,7 +26,33 @@ const CropSuggestion = () => {
 
   // Handle input changes with useReducer
   const handleChange = (e) => {
-    dispatch({ name: e.target.name, value: e.target.value });
+    const { name, value } = e.target;
+    let parsedValue = parseFloat(value);
+
+    // Validate no negative values
+    if (parsedValue < 0) {
+      message.error(`Negative values are not allowed for ${name.toUpperCase()}`);
+      return;
+    }
+
+    // Validate N, P, K, temperature, and humidity do not exceed 100
+    if (["N", "P", "K", "temperature", "humidity"].includes(name)) {
+      if (parsedValue > 100) {
+        message.error(`${name.toUpperCase()} should not exceed 100`);
+        return;
+      }
+    }
+
+    // Validate pH is between 1 and 14
+    if (name === "ph") {
+      if (parsedValue < 1 || parsedValue > 14) {
+        message.error("pH value must be between 1 and 14");
+        return;
+      }
+    }
+
+    // Dispatch the value if validation passes
+    dispatch({ name, value });
   };
 
   // Validate inputs
@@ -50,18 +76,20 @@ const CropSuggestion = () => {
         Object.entries(values).map(([key, val]) => [key, parseFloat(val)])
       );
 
-      const { data } = await axios.post(
-        "http://localhost:5000/api/croprecommendation",
-        formattedValues
-      );
-
-      if (data?.recommendation) {
+      // Use a CORS proxy to bypass CORS errors in development
+      const apiUrl = "https://smart-irrigation-1.onrender.com/recommendation";
+      const { data } = await axios.post(apiUrl, formattedValues, {
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      if (data?.predicted_crop) {
         setResult(data);
       } else {
         message.warning("No crop recommendation received. Try different inputs.");
       }
     } catch (error) {
       message.error("Error fetching crop suggestions. Please try again.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -96,10 +124,10 @@ const CropSuggestion = () => {
 
       {/* Show Results */}
       {loading && <Spin size="large" className="loading-spinner" />}
-      {result?.recommendation && (
+      {result?.predicted_crop && (
         <Card className="result-card">
-          <h3 className="result-title">Recommended Crops:</h3>
-          <p className="result-text">{result.recommendation}</p>
+          <h3 className="result-title">Recommended Crop:</h3>
+          <p className="result-text">{result.predicted_crop}</p>
         </Card>
       )}
     </div>

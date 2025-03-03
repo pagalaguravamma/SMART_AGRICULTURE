@@ -3,10 +3,21 @@ import { Button, Card } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import "./CropPage.css";
 import CropSuggestion from "./CropSuggestion";
-import Devices from "./Devices"; // Import Devices Page
+import Devices from "./Devices";
+import wheatImg from "../assets/images/wheat.jpg";
+import riceImg from "../assets/images/rice.jpeg";
+import cornImg from "../assets/images/corn.jpg";
+import vegetablesImg from "../assets/images/vegetables.jpg";
 
 const CropPage = ({ onBack }) => {
   const [showDevices, setShowDevices] = useState(false);
+  
+  const cropImages = {
+    Wheat: wheatImg,
+    Rice: riceImg,
+    Corn: cornImg,
+    Vegetables: vegetablesImg,
+  };
 
   if (showDevices) {
     return <Devices onBack={() => setShowDevices(false)} />;
@@ -37,26 +48,20 @@ const CropPage = ({ onBack }) => {
 
       <header className="crop-header">
         <h1>Smart Crop Suggestions</h1>
-        <p>Find the best crops to grow based on climate, soil type, and season.</p>
+        <p>Find the best crops to grow based on climate, soil type.</p>
       </header>
 
       <section className="crop-suggestions">
-        <h2>Recommended Crops</h2>
+        <h2>CHOOSE YOUR CROPS</h2>
         <div className="crop-grid">
-          {["Wheat", "Rice", "Corn", "Vegetables"].map((crop, index) => (
+          {Object.keys(cropImages).map((crop, index) => (
             <Card 
               className="crop-card" 
               key={index}
               hoverable
-              cover={
-                <img 
-                  alt={crop}
-                  src={`https://via.placeholder.com/200x150.png?text=${crop}`} 
-                />
-              }
+              cover={<img alt={crop} src={cropImages[crop]} />}
             >
               <h3>{crop}</h3>
-              <p>Best conditions for growing {crop.toLowerCase()}.</p>
             </Card>
           ))}
         </div>

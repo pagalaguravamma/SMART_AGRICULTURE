@@ -1,580 +1,421 @@
-import React, { useState } from "react";
-import { Button, Card, Select, Input, Row, Col, Typography, message } from "antd";
-import { LeftOutlined, UploadOutlined } from "@ant-design/icons";
-import "./Devices.css";
-import dayjs from "dayjs";
+import React, { useState, useEffect } from "react";
 import Temperature from "./Temperature";
-import { Progress, Statistic } from "antd";
-
-const { Title, Text } = Typography;
-const { Option } = Select;
+import "./Devices.css";
 
 const crop_data = {
-    "wheat": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 4167,
-        "soil_moisture_percent": 50
-    },
-    "rice": {
-        "growth_days": 150,
-        "water_required_per_acre_liters": 1000000,
-        "daily_water_consumption_liters": 6667,
-        "soil_moisture_percent": 70
-    },
-    "corn": {
-        "growth_days": 110,
-        "water_required_per_acre_liters": 600000,
-        "daily_water_consumption_liters": 5455,
-        "soil_moisture_percent": 60
-    },
-    "soybean": {
-        "growth_days": 100,
-        "water_required_per_acre_liters": 450000,
-        "daily_water_consumption_liters": 4500,
-        "soil_moisture_percent": 55
-    },
-    "barley": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 4444,
-        "soil_moisture_percent": 50
-    },
-    "oats": {
-        "growth_days": 100,
-        "water_required_per_acre_liters": 450000,
-        "daily_water_consumption_liters": 4500,
-        "soil_moisture_percent": 55
-    },
-    "sorghum": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 4167,
-        "soil_moisture_percent": 50
-    },
-    "millet": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 350000,
-        "daily_water_consumption_liters": 3889,
-        "soil_moisture_percent": 45
-    },
-    "potato": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 600000,
-        "daily_water_consumption_liters": 6667,
-        "soil_moisture_percent": 65
-    },
-    "sweet_potato": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 4583,
-        "soil_moisture_percent": 60
-    },
-    "cassava": {
-        "growth_days": 300,
-        "water_required_per_acre_liters": 800000,
-        "daily_water_consumption_liters": 2667,
-        "soil_moisture_percent": 55
-    },
-    "sugarcane": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1500000,
-        "daily_water_consumption_liters": 4109,
-        "soil_moisture_percent": 70
-    },
-    "cotton": {
-        "growth_days": 180,
-        "water_required_per_acre_liters": 700000,
-        "daily_water_consumption_liters": 3889,
-        "soil_moisture_percent": 60
-    },
-    "sunflower": {
-        "growth_days": 110,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 4545,
-        "soil_moisture_percent": 55
-    },
-    "canola": {
-        "growth_days": 100,
-        "water_required_per_acre_liters": 450000,
-        "daily_water_consumption_liters": 4500,
-        "soil_moisture_percent": 50
-    },
-    "peanut": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 4167,
-        "soil_moisture_percent": 55
-    },
-    "alfalfa": {
-        "growth_days": 60,
-        "water_required_per_acre_liters": 600000,
-        "daily_water_consumption_liters": 10000,
-        "soil_moisture_percent": 70
-    },
-    "clover": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 4444,
-        "soil_moisture_percent": 60
-    },
-    "tomato": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 600000,
-        "daily_water_consumption_liters": 6667,
-        "soil_moisture_percent": 65
-    },
-    "cucumber": {
-        "growth_days": 60,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 8333,
-        "soil_moisture_percent": 70
-    },
-    "pepper": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 6111,
-        "soil_moisture_percent": 65
-    },
-    "onion": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 4167,
-        "soil_moisture_percent": 60
-    },
-    "garlic": {
-        "growth_days": 150,
-        "water_required_per_acre_liters": 450000,
-        "daily_water_consumption_liters": 3000,
-        "soil_moisture_percent": 55
-    },
-    "carrot": {
-        "growth_days": 80,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 5000,
-        "soil_moisture_percent": 60
-    },
-    "lettuce": {
-        "growth_days": 60,
-        "water_required_per_acre_liters": 300000,
-        "daily_water_consumption_liters": 5000,
-        "soil_moisture_percent": 70
-    },
-    "cabbage": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 5556,
-        "soil_moisture_percent": 65
-    },
-    "broccoli": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 6111,
-        "soil_moisture_percent": 65
-    },
-    "cauliflower": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 6111,
-        "soil_moisture_percent": 65
-    },
-    "spinach": {
-        "growth_days": 40,
-        "water_required_per_acre_liters": 300000,
-        "daily_water_consumption_liters": 7500,
-        "soil_moisture_percent": 70
-    },
-    "pea": {
-        "growth_days": 60,
-        "water_required_per_acre_liters": 350000,
-        "daily_water_consumption_liters": 5833,
-        "soil_moisture_percent": 60
-    },
-    "bean": {
-        "growth_days": 70,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 5714,
-        "soil_moisture_percent": 60
-    },
-    "lentil": {
-        "growth_days": 100,
-        "water_required_per_acre_liters": 350000,
-        "daily_water_consumption_liters": 3500,
-        "soil_moisture_percent": 55
-    },
-    "chickpea": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 3333,
-        "soil_moisture_percent": 50
-    },
-    "mustard": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 4444,
-        "soil_moisture_percent": 55
-    },
-    "sesame": {
-        "growth_days": 100,
-        "water_required_per_acre_liters": 350000,
-        "daily_water_consumption_liters": 3500,
-        "soil_moisture_percent": 50
-    },
-    "flax": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 400000,
-        "daily_water_consumption_liters": 4444,
-        "soil_moisture_percent": 55
-    },
-    "safflower": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 450000,
-        "daily_water_consumption_liters": 3750,
-        "soil_moisture_percent": 50
-    },
-    "grape": {
-        "growth_days": 180,
-        "water_required_per_acre_liters": 800000,
-        "daily_water_consumption_liters": 4444,
-        "soil_moisture_percent": 60
-    },
-    "apple": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1000000,
-        "daily_water_consumption_liters": 2739,
-        "soil_moisture_percent": 65
-    },
-    "orange": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1200000,
-        "daily_water_consumption_liters": 3288,
-        "soil_moisture_percent": 70
-    },
-    "banana": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1500000,
-        "daily_water_consumption_liters": 4109,
-        "soil_moisture_percent": 75
-    },
-    "mango": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1300000,
-        "daily_water_consumption_liters": 3562,
-        "soil_moisture_percent": 70
-    },
-    "papaya": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1400000,
-        "daily_water_consumption_liters": 3836,
-        "soil_moisture_percent": 75
-    },
-    "pineapple": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1000000,
-        "daily_water_consumption_liters": 2739,
-        "soil_moisture_percent": 60
-    },
-    "strawberry": {
-        "growth_days": 90,
-        "water_required_per_acre_liters": 500000,
-        "daily_water_consumption_liters": 5556,
-        "soil_moisture_percent": 70
-    },
-    "blueberry": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 600000,
-        "daily_water_consumption_liters": 5000,
-        "soil_moisture_percent": 65
-    },
-    "raspberry": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 4583,
-        "soil_moisture_percent": 65
-    },
-    "blackberry": {
-        "growth_days": 120,
-        "water_required_per_acre_liters": 550000,
-        "daily_water_consumption_liters": 4583,
-        "soil_moisture_percent": 65
-    },
-    "avocado": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1200000,
-        "daily_water_consumption_liters": 3288,
-        "soil_moisture_percent": 70
-    },
-    "olive": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 800000,
-        "daily_water_consumption_liters": 2192,
-        "soil_moisture_percent": 60
-    },
-    "coconut": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1500000,
-        "daily_water_consumption_liters": 4109,
-        "soil_moisture_percent": 75
-    },
-    "coffee": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1000000,
-        "daily_water_consumption_liters": 2739,
-        "soil_moisture_percent": 70
-    },
-    "tea": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 900000,
-        "daily_water_consumption_liters": 2466,
-        "soil_moisture_percent": 65
-    },
-    "cocoa": {
-        "growth_days": 365,
-        "water_required_per_acre_liters": 1200000,
-        "daily_water_consumption_liters": 3288,
-        "soil_moisture_percent": 75
-    }
-  }
-  
-  const soil_adjustment_factors = {
-    "sandy": 1.2,
-    "loamy": 1.0,
-    "clay": 0.8
-  }
-  
+    wheat: { growth_days: 120, water_required_per_acre_liters: 500000, daily_water_consumption_liters: 4167, soil_moisture_percent: 50 },
+    rice: { growth_days: 150, water_required_per_acre_liters: 1000000, daily_water_consumption_liters: 6667, soil_moisture_percent: 70 },
+    corn: { growth_days: 110, water_required_per_acre_liters: 600000, daily_water_consumption_liters: 5455, soil_moisture_percent: 60 },
+    soybean: { growth_days: 100, water_required_per_acre_liters: 450000, daily_water_consumption_liters: 4500, soil_moisture_percent: 55 },
+    barley: { growth_days: 90, water_required_per_acre_liters: 400000, daily_water_consumption_liters: 4444, soil_moisture_percent: 50 },
+    oats: { growth_days: 100, water_required_per_acre_liters: 450000, daily_water_consumption_liters: 4500, soil_moisture_percent: 55 },
+    sorghum: { growth_days: 120, water_required_per_acre_liters: 500000, daily_water_consumption_liters: 4167, soil_moisture_percent: 50 },
+    millet: { growth_days: 90, water_required_per_acre_liters: 350000, daily_water_consumption_liters: 3889, soil_moisture_percent: 45 },
+    tomato: { growth_days: 90, water_required_per_acre_liters: 400000, daily_water_consumption_liters: 4444, soil_moisture_percent: 50 },
+    lettuce: { growth_days: 60, water_required_per_acre_liters: 300000, daily_water_consumption_liters: 5000, soil_moisture_percent: 60 },
+    pepper: { growth_days: 90, water_required_per_acre_liters: 450000, daily_water_consumption_liters: 5000, soil_moisture_percent: 55 },
+    strawberry: { growth_days: 90, water_required_per_acre_liters: 350000, daily_water_consumption_liters: 3889, soil_moisture_percent: 45 }
+};
+
+const soil_adjustment_factors = {
+    sandy: 1.2,
+    loamy: 1.0,
+    clay: 0.8
+};
+
 const Devices = ({ onBack }) => {
-    const [selectedCrop, setSelectedCrop] = useState(null);
-    const [selectedSoil, setSelectedSoil] = useState(null);
-    const [acres, setAcres] = useState("");
-    const [totalWaterRequired, setTotalWaterRequired] = useState(0);
-    const [apiResponse, setApiResponse] = useState(null);
-    const today = dayjs().format("YYYY-MM-DD");
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [uploadStatus, setUploadStatus] = useState({});
+    const [calculationResults, setCalculationResults] = useState({});
+    const [manualDurations, setManualDurations] = useState({});
+    const [isManualMode, setIsManualMode] = useState({});
 
-    const calculateWaterRequirement = () => {
-        if (selectedCrop && selectedSoil && acres > 0) {
-            const cropInfo = crop_data[selectedCrop];
-            const soilFactor = soil_adjustment_factors[selectedSoil];
-            const totalWater = cropInfo.water_required_per_acre_liters * acres * soilFactor;
-            setTotalWaterRequired(totalWater);
-        } else {
-            setTotalWaterRequired(0);
-        }
-    };
-    const handleSoilChange = (value) => {
-        setSelectedSoil(value);
-        calculateWaterRequirement();
-    };
-    const [endDate, setEndDate] = useState("");
+    // State for each crop card's selections
+    const [cropSelections, setCropSelections] = useState({});
+    const [soilSelections, setSoilSelections] = useState({});
+    const [acresValues, setAcresValues] = useState({});
 
-    const handleCropChange = (value) => {
-        setSelectedCrop(value);
-        calculateWaterRequirement();
-    
-        if (crop_data[value]) {
-            const growthDays = crop_data[value].growth_days;
-            const estimatedEnd = dayjs().add(growthDays, 'day').format("YYYY-MM-DD");
-            setEndDate(estimatedEnd);
-        }
-    };
-    
-    const handleAcresChange = (e) => {
-        const value = e.target.value;
-        if (value === "" || (parseFloat(value) > 0 && !isNaN(value))) {
-            setAcres(value);
-            calculateWaterRequirement();
-        }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://192.168.31.124:2041/get_data");
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const result = await response.json();
+                setData(result);
+                
+                // Initialize manual mode states based on config
+                const newManualModes = {};
+                Object.keys(result.config).forEach(key => {
+                    const sensorKey = `sensor${key}`;
+                    newManualModes[sensorKey] = !result.config[key].automatic_mode;
+                });
+                setIsManualMode(newManualModes);
+                
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setError(error);
+                setLoading(false);
+            }
+        };
 
-    const handleUpload = async () => {
-        if (!selectedCrop || !selectedSoil || !acres) {
-            message.error("Please fill in all fields before uploading.");
+        fetchData();
+        const intervalId = setInterval(fetchData, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    const handleUpload = async (sensorKey) => {
+        const cropNumber = parseInt(sensorKey.replace("sensor", ""));
+        const selectedCrop = cropSelections[sensorKey] || data.config[cropNumber].name.toLowerCase();
+        const selectedSoil = soilSelections[sensorKey];
+        const acres = acresValues[sensorKey] || 1;
+
+        if (!selectedCrop || !selectedSoil) {
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: "Please select both crop and soil type"
+            }));
             return;
         }
-    
-        const cropInfo = crop_data[selectedCrop];
-    
-        const payload = {
-            crop_name: selectedCrop.toLowerCase(),
-            land_area: Number(acres),
-            soil_type: selectedSoil.toLowerCase(),
-        };
-    
+
         try {
-            const response = await fetch("https://smart-irrigation-2.onrender.com/calculate", {
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: "Calculating..."
+            }));
+
+            // First API call to calculate
+            const cropInfo = crop_data[selectedCrop] || crop_data[selectedCrop.toLowerCase()];
+            const payload = {
+                crop_name: selectedCrop.toLowerCase(),
+                land_area: Number(acres),
+                soil_type: selectedSoil.toLowerCase(),
+            };
+
+            const calculateResponse = await fetch("https://smart-irrigation-2.onrender.com/calculate", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(payload),
             });
-    
-            if (!response.ok) throw new Error("Network response was not ok");
-    
-            const data = await response.json();
-            setApiResponse(data);
-            message.success("Data uploaded successfully!");
-    
-            // Send Soil Moisture Requirements based on the selected crop
-            await sendSoilMoistureThreshold(cropInfo.soil_moisture_percent);
+
+            if (!calculateResponse.ok) {
+                throw new Error("Calculation failed");
+            }
+
+            const calculateData = await calculateResponse.json();
+            setCalculationResults(prev => ({
+                ...prev,
+                [sensorKey]: calculateData
+            }));
+
+            // Second API call to update crop
+            const updatePayload = {
+                crop_number: cropNumber,
+                name: selectedCrop,
+                min_threshold: cropInfo.soil_moisture_percent - 10,
+                max_threshold: cropInfo.soil_moisture_percent + 10,
+                automatic_mode: !isManualMode[sensorKey],
+                manual_duration: isManualMode[sensorKey] ? manualDurations[sensorKey] || 0 : 0
+            };
+
+            const updateResponse = await fetch("http://192.168.31.124:2040/update_crop", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatePayload),
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error("Update failed");
+            }
+
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: "Upload successful!"
+            }));
+
         } catch (error) {
-            console.error("Error uploading data:", error);
-            message.error("Failed to upload data.");
+            console.error("Upload error:", error);
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: `Error: ${error.message}`
+            }));
         }
     };
-    
-    // Function to send soil moisture threshold
-    const sendSoilMoistureThreshold = async (moisture) => {
-        const thresholdPayload = {
-            max: moisture,
-            min: moisture,
-        };
-    
+
+    const handleManualIrrigation = async (sensorKey) => {
+        const cropNumber = parseInt(sensorKey.replace("sensor", ""));
+        const duration = manualDurations[sensorKey] || 0;
+
         try {
-            const response = await fetch("https://smart-irrigation-3.onrender.com/threshold", {
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: "Starting manual irrigation..."
+            }));
+
+            const response = await fetch("http://192.168.31.124:2040/set_manual", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(thresholdPayload),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    crop_number: cropNumber,
+                    duration: duration
+                }),
             });
-    
-            if (!response.ok) throw new Error("Failed to send soil moisture data.");
-    
-            message.success("Happy Monitoring! 🌱");
+
+            if (!response.ok) {
+                throw new Error("Manual irrigation failed");
+            }
+
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: `Manual irrigation started for ${duration} seconds`
+            }));
+
         } catch (error) {
-            console.error("Error sending soil moisture:", error);
-            message.error("Failed to send soil moisture data.");
+            console.error("Manual irrigation error:", error);
+            setUploadStatus(prev => ({
+                ...prev,
+                [sensorKey]: `Error: ${error.message}`
+            }));
         }
-    };   
+    };
+
+    const toggleManualMode = (sensorKey) => {
+        setIsManualMode(prev => ({
+            ...prev,
+            [sensorKey]: !prev[sensorKey]
+        }));
+    };
+
+    const handleManualDurationChange = (sensorKey, value) => {
+        setManualDurations(prev => ({
+            ...prev,
+            [sensorKey]: Number(value)
+        }));
+    };
+
+    const handleCropChange = (sensorKey, value) => {
+        setCropSelections(prev => ({
+            ...prev,
+            [sensorKey]: value
+        }));
+    };
+
+    const handleSoilChange = (sensorKey, value) => {
+        setSoilSelections(prev => ({
+            ...prev,
+            [sensorKey]: value
+        }));
+    };
+
+    const handleAcresChange = (sensorKey, value) => {
+        setAcresValues(prev => ({
+            ...prev,
+            [sensorKey]: Number(value)
+        }));
+    };
+
+    if (loading) {
+        return <div className="loading">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="error">Error fetching data: {error.message}</div>;
+    }
+
+    const { temperature, humidity } = data.data;
+    const crops = data.config;
 
     return (
         <div className="devices-container">
-            <div className="header-buttons">
-                <Button className="back-button" onClick={onBack} type="primary" icon={<LeftOutlined />} size="large">
-                    Back
-                </Button>
+            <div className="devices-header">
+                <h1>Device Dashboard</h1>
+                <button className="back-button" onClick={onBack}>
+                    Back to Home
+                </button>
             </div>
 
-            <div className="main-content">
-                <Card className="left-card">
-                    <Temperature />
-                </Card>
+            <div className="dashboard-layout">
+                <div className="left-section">
+                    <div className="sensor-section">
+                        <Temperature temperature={temperature} humidity={humidity} />
+                        <div className="timestamp">
+                            Last updated: {new Date(data.timestamp).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
 
-                <Card className="right-card" title="Crop Selection and Water Requirement">
-                    <Row justify="center" gutter={[16, 16]}>
-                        <Col span={24}>
-                        <Row justify="center" gutter={[16, 16]}>
-    <Col span={8}>
-        <Select
-            className="crop-select"
-            placeholder="Select Crop"
-            style={{ width: "100%" }}
-            onChange={(value) => handleCropChange(value.toLowerCase())} // Convert to lowercase when sending
-        >
-            {Object.keys(crop_data).map((crop) => (
-                <Option key={crop} value={crop.toLowerCase()}>
-                    {crop.charAt(0).toUpperCase() + crop.slice(1)} {/* Display capitalized */}
-                </Option>
-            ))}
-        </Select>
-    </Col>
-    <Col span={8}>
-        <Select
-            className="soil-select"
-            placeholder="Select Soil Type"
-            style={{ width: "100%" }}
-            onChange={(value) => handleSoilChange(value.toLowerCase())} // Convert to lowercase when sending
-        >
-            {Object.keys(soil_adjustment_factors).map((soil) => (
-                <Option key={soil} value={soil.toLowerCase()}>
-                    {soil.charAt(0).toUpperCase() + soil.slice(1)} {/* Display capitalized */}
-                </Option>
-            ))}
-        </Select>
-    </Col>
-    <Col span={8}>
-        <Input 
-            className="acre-input"
-            placeholder="Number of Acres"
-            type="number"
-            style={{ width: "100%" }}
-            value={acres}
-            onChange={handleAcresChange}
-            min="1"
-        />
-    </Col>
-</Row>
+                <div className="right-section">
+                    <h2>Crop Configuration</h2>
+                    <div className="crop-grid-container">
+                        <div className="crop-grid">
+                            {Object.entries(crops).map(([key, config]) => {
+                                const sensorKey = `sensor${key}`;
+                                const sensor = data.data[sensorKey];
+                                const cropNumber = parseInt(key);
+                                const results = calculationResults[sensorKey];
+                                const currentCrop = config.name.toLowerCase();
+                                
+                                return (
+                                    <div key={key} className="crop-card">
+                                        <div className="card-header">
+                                            <h3 className="crop-title">{config.name} (Crop {cropNumber})</h3>
+                                            <div className="mode-toggle">
+                                                <label>
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={!!isManualMode[sensorKey]}
+                                                        onChange={() => toggleManualMode(sensorKey)}
+                                                    />
+                                                    Manual Mode
+                                                </label>
+                                            </div>
+                                        </div>
 
-                        </Col>
-                        <Col span={24}>
-                            <Row justify="center">
-                                <Col span={8}>
-                                    <Input value={today} disabled style={{ width: "100%" }} />
-                                </Col>
-                            </Row>
-                        </Col>
-                        {selectedCrop && (
-    <Col span={24}>
-        <Row justify="center">
-            <Col span={8}>
-                <Input value={`End Date: ${endDate}`} disabled style={{ width: "101%", fontWeight: "bold" }} />
-            </Col>
-        </Row>
-    </Col>
-)}
+                                        <div className="card-content">
+                                            <div className="sensor-display">
+                                                <div className="sensor-row">
+                                                    <span className="sensor-label">Current Mode:</span>
+                                                    <span className="sensor-value">{sensor.mode}</span>
+                                                </div>
+                                                <div className="sensor-row">
+                                                    <span className="sensor-label">Moisture:</span>
+                                                    <span className="sensor-value">{sensor.moisture}%</span>
+                                                </div>
+                                                <div className="sensor-row">
+                                                    <span className="sensor-label">Thresholds:</span>
+                                                    <span className="sensor-value">{sensor.min_threshold}% - {sensor.max_threshold}%</span>
+                                                </div>
+                                                <div className="sensor-row">
+                                                    <span className="sensor-label">Relay Status:</span>
+                                                    <span className={`sensor-value relay-${sensor.relay_status.toLowerCase()}`}>
+                                                        {sensor.relay_status}
+                                                    </span>
+                                                </div>
+                                            </div>
 
-                        {totalWaterRequired > 0 && (
-                            <Col span={24}>
-                                <div className="results-section">
-                                    <Text>
-                                        <strong>Total Water Required:</strong> {totalWaterRequired.toLocaleString()} liters
-                                    </Text>
-                                </div>
-                            </Col>
-                        )}
-                        <Col span={24} style={{ textAlign: "center" }}>
-                            <Button className="upload-button" type="primary" icon={<UploadOutlined />} size="large" onClick={handleUpload}>
-                                Upload Data
-                            </Button>
-                        </Col>
-                        {apiResponse && (
-    <div className="response-container">
-        <Card className="response-card" title="Crop Details">
-            <p><Text strong>Crop:</Text> {apiResponse.crop}</p>
-            <p><Text strong>Growth Days:</Text> {apiResponse.growth_days} days</p>
-            <p><Text strong>Land Area:</Text> {apiResponse.land_area} acres</p>
-            <p><Text strong>Soil Type:</Text> {apiResponse.soil_type}</p>
-        </Card>
+                                            <div className="form-group">
+                                                <label>Crop:</label>
+                                                <select 
+                                                    value={cropSelections[sensorKey] || currentCrop}
+                                                    onChange={(e) => handleCropChange(sensorKey, e.target.value)}
+                                                >
+                                                    {Object.keys(crop_data).map((cropName) => (
+                                                        <option key={cropName} value={cropName}>
+                                                            {cropName}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
 
-        <Card className="response-card" title="Water & Rainfall Info">
-            <p><Text strong>Required Soil Moisture:</Text> {apiResponse.required_soil_moisture}%</p>
-            <p><Text strong>Predicted Rainfall:</Text> {apiResponse.predicted_rainfall.toFixed(2)} mm</p>
-            <Progress percent={apiResponse.required_soil_moisture} status="active" />
-        </Card>
+                                            <div className="form-group">
+                                                <label>Soil Type:</label>
+                                                <select 
+                                                    value={soilSelections[sensorKey] || ""}
+                                                    onChange={(e) => handleSoilChange(sensorKey, e.target.value)}
+                                                >
+                                                    <option value="">Select Soil Type</option>
+                                                    {Object.keys(soil_adjustment_factors).map((soilType) => (
+                                                        <option key={soilType} value={soilType}>
+                                                            {soilType}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
 
-        <Card className="response-card centered-card" title="Daily Water Requirements">
-            <Statistic title="Rainfall Contribution" value={apiResponse.daily_water_requirements.rainfall_contribution.toFixed(2)} suffix="L" />
-            <Statistic title="With Rainfall" value={apiResponse.daily_water_requirements.with_rainfall.toFixed(2)} suffix="L" />
-            <Statistic title="Without Rainfall" value={apiResponse.daily_water_requirements.without_rainfall.toFixed(2)} suffix="L" />
-            <Progress type="circle" percent={(apiResponse.daily_water_requirements.with_rainfall / apiResponse.daily_water_requirements.without_rainfall) * 100} strokeColor="#52c41a" />
-        </Card>
+                                            <div className="form-group">
+                                                <label>Acres:</label>
+                                                <input
+                                                    type="number"
+                                                    value={acresValues[sensorKey] || 1}
+                                                    onChange={(e) => handleAcresChange(sensorKey, e.target.value)}
+                                                    min="1"
+                                                />
+                                            </div>
 
-        <Card className="response-card" title="Total Water Requirements">
-            <Statistic title="With Rainfall" value={apiResponse.total_water_requirements.with_rainfall.toFixed(2)} suffix="L" />
-            <Statistic title="Without Rainfall" value={apiResponse.total_water_requirements.without_rainfall.toFixed(2)} suffix="L" />
-            <Progress type="dashboard" percent={(apiResponse.total_water_requirements.with_rainfall / apiResponse.total_water_requirements.without_rainfall) * 100} strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }} />
-        </Card>
-    </div>
-)}
+                                            {isManualMode[sensorKey] && (
+                                                <div className="manual-controls">
+                                                    <div className="form-group">
+                                                        <label>Duration (seconds):</label>
+                                                        <input
+                                                            type="number"
+                                                            value={manualDurations[sensorKey] || 0}
+                                                            onChange={(e) => handleManualDurationChange(sensorKey, e.target.value)}
+                                                            min="0"
+                                                        />
+                                                    </div>
+                                                    <button 
+                                                        className="manual-button"
+                                                        onClick={() => handleManualIrrigation(sensorKey)}
+                                                    >
+                                                        Start Irrigation
+                                                    </button>
+                                                </div>
+                                            )}
 
+                                            <div className="action-buttons">
+                                                <button 
+                                                    className="upload-button"
+                                                    onClick={() => handleUpload(sensorKey)}
+                                                >
+                                                    Update Configuration
+                                                </button>
+                                            </div>
 
-                    </Row>
-                </Card>
+                                            {uploadStatus[sensorKey] && (
+                                                <div className={`status-message ${uploadStatus[sensorKey].includes("Error") ? "error" : "success"}`}>
+                                                    {uploadStatus[sensorKey]}
+                                                </div>
+                                            )}
+
+                                            {results && (
+                                                <div className="calculation-results">
+                                                    <h4>Water Requirements</h4>
+                                                    <div className="results-grid">
+                                                        <div className="result-item">
+                                                            <span className="result-label">Total (with rainfall):</span>
+                                                            <span className="result-value">{results.total_water_requirements.with_rainfall.toLocaleString()} L</span>
+                                                        </div>
+                                                        <div className="result-item">
+                                                            <span className="result-label">Total (without rainfall):</span>
+                                                            <span className="result-value">{results.total_water_requirements.without_rainfall.toLocaleString()} L</span>
+                                                        </div>
+                                                        <div className="result-item">
+                                                            <span className="result-label">Daily (with rainfall):</span>
+                                                            <span className="result-value">{results.daily_water_requirements.with_rainfall.toLocaleString()} L/day</span>
+                                                        </div>
+                                                        <div className="result-item">
+                                                            <span className="result-label">Daily (without rainfall):</span>
+                                                            <span className="result-value">{results.daily_water_requirements.without_rainfall.toLocaleString()} L/day</span>
+                                                        </div>
+                                                        <div className="result-item">
+                                                            <span className="result-label">Growth Period:</span>
+                                                            <span className="result-value">{results.growth_days} days</span>
+                                                        </div>
+                                                        <div className="result-item">
+                                                            <span className="result-label">Soil Moisture:</span>
+                                                            <span className="result-value">{results.required_soil_moisture}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <footer className="devices-footer">
-                <Row justify="center">
-                    <Col>
-                        <Text type="secondary">Powered by IntelliGrow | Smart Agriculture Solutions</Text>
-                    </Col>
-                </Row>
-            </footer>
         </div>
     );
 };

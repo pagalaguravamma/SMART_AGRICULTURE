@@ -40,7 +40,7 @@ const Devices = ({ onBack }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://192.168.31.124:2041/get_data");
+                const response = await fetch("https://smart-irrigation-3-ye2c.onrender.com/get_data");
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
@@ -96,7 +96,7 @@ const Devices = ({ onBack }) => {
                 soil_type: selectedSoil.toLowerCase(),
             };
 
-            const calculateResponse = await fetch("https://smart-irrigation-2.onrender.com/calculate", {
+            const calculateResponse = await fetch("https://smart-irrigation-2-7840.onrender.com/calculate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -124,7 +124,7 @@ const Devices = ({ onBack }) => {
                 manual_duration: isManualMode[sensorKey] ? manualDurations[sensorKey] || 0 : 0
             };
 
-            const updateResponse = await fetch("http://192.168.31.124:2040/update_crop", {
+            const updateResponse = await fetch("https://smart-irrigation-3-ye2c.onrender.com/update_crop", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -160,7 +160,7 @@ const Devices = ({ onBack }) => {
                 [sensorKey]: "Starting manual irrigation..."
             }));
 
-            const response = await fetch("http://192.168.31.124:2040/set_manual", {
+            const response = await fetch("https://smart-irrigation-3-ye2c.onrender.com/set_manual", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

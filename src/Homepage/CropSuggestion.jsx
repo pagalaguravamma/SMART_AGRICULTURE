@@ -77,7 +77,7 @@ const CropSuggestion = () => {
       );
 
       // Use a CORS proxy to bypass CORS errors in development
-      const apiUrl = "https://smart-irrigation-1.onrender.com/recommendation";
+      const apiUrl = "https://smart-irrigation-69k5.onrender.com/recommendation";
       const { data } = await axios.post(apiUrl, formattedValues, {
         headers: { "Content-Type": "application/json" },
       });

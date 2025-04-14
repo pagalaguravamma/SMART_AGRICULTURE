@@ -6,7 +6,7 @@ const Rainfall = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://smart-irrigation-1.onrender.com/predict")
+    fetch("https://smart-irrigation-1-1iac.onrender.com/predict")
       .then((response) => response.json())
       .then((result) => {
         setData(result);
